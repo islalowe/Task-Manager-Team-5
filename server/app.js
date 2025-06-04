@@ -16,18 +16,16 @@ app.use(express.json());
 const data = require("../tasks");
 
 
-
 // Define a simple route
-app.get("/tm/tasks", async (req,res)=>{
+app.get("/api/tasks", async (req, res) => {
 	try {
-		const task = await data.find();
-		res.writeHead(200, {"Content-Type": "application/json"});
-		res.end(JSON.stringify(task));
-		// res.status(200).json({task});   // Alternate method for sending response
-	} catch {
-		res.status(500).json({msg: error});
-	};
-});
+	  const tasks = await data.find(); // `data` is your Task model
+	  res.status(200).json(tasks);     // Send tasks as JSON
+	} catch (error) {
+	  res.status(500).json({ msg: error.message });
+	}
+  });
+  
 
 // Connect to the database and start the appl server
 const port = 8080;
