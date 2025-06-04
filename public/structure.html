@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Test UI</title>
+  <link rel="stylesheet" href="Style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>API Request Tester</h1>
+
+    <div class="form-group">
+      <label>Request Type:</label>
+      <select id="method">
+        <option>GET</option>
+        <option>POST</option>
+        <option>PUT</option>
+        <option>DELETE</option>
+        <option>PATCH</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Endpoint:</label>
+      <input type="text" id="endpoint" placeholder="/users or /users/1" />
+    </div>
+
+    <div class="form-group">
+      <label>Query Params (key=value&...):</label>
+      <input type="text" id="query" placeholder="e.g., username=Bret" />
+    </div>
+
+    <div class="form-group">
+      <label>Request Body (JSON):</label>
+      <textarea id="body" placeholder='{"name": "John"}'></textarea>
+    </div>
+
+    <button id="send">Send Request</button>
+
+    <h2>Response</h2>
+    <pre id="response"></pre>
+  </div>
+
+  <script src="Index.js"></script>
+</body>
+</html>
