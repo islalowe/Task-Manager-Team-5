@@ -1,3 +1,6 @@
+// KEEP DOM out of this file. It is for API logic, only.
+
+
 class APILibrary {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -48,11 +51,6 @@ class APILibrary {
   delete(id) {
     return this.request("DELETE", `/${id}`);
   }
-
-  
-  delete(id) {
-    return this.request("DELETE", `/${id}`);
-  }
   
   toggleComplete(id, completed) {
     return this.request("PATCH", `/${id}`, "", { completed });
@@ -60,75 +58,3 @@ class APILibrary {
   
 }
 
-// this will point to routes defines in server/routes/tasks.js
-// instantiates the class
-// Sets the base URL to /api/tasks so everything else can just add endpoints after that.
-const api = new APILibrary("/api/tasks");
-
-// DOM Elements
-const taskForm = document.getElementById("task-form");
-const taskInput = document.getElementById("task-input");
-const taskList = document.getElementById("task-list");
-const refreshBtn = document.getElementById("get-tasks-button");
-
-// Load and display tasks
-async function loadTasks() {
-  try {
-    const tasks = await api.getAll();
-    taskList.innerHTML = "";
-
-    tasks.forEach(task => {
-      const li = document.createElement("li");
-      li.textContent = task.name;
-      if (task.completed) {
-        li.classList.add("completed");
-        li.classList.add("crossed-out");
-      }
-
-      // COMPLETE BUTTON
-      const completeBtn = document.createElement("button");
-      completeBtn.textContent = "✔️";
-      completeBtn.classList.add("complete-button");
-      completeBtn.addEventListener("click", async (e) => {
-        e.stopPropagation(); // prevent it from triggering other click handlers
-        await api.toggleComplete(task._id, !task.completed);
-        loadTasks();
-      });
-
-      // DELETE BUTTON
-      const deleteBtn = document.createElement("button");
-      deleteBtn.textContent = "🗑️"; // or "D" if you prefer
-      deleteBtn.classList.add("delete-button");
-      deleteBtn.addEventListener("click", async (e) => {
-        e.stopPropagation(); // prevent accidental completion
-        await api.delete(task._id);
-        loadTasks();
-      });
-
-      // Add buttons to the task list item
-      li.appendChild(completeBtn);
-      li.appendChild(deleteBtn);
-      taskList.appendChild(li);
-    });
-  } catch (err) {
-    console.error("Failed to load tasks:", err);
-  }
-}
-
-// Add task
-taskForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = taskInput.value.trim();
-  if (!name) return;
-
-  await api.create({ name, completed: false });
-  taskInput.value = "";
-  loadTasks();
-});
-
-// Refresh manually
-// This calls the loadTask Get function in script.js
-refreshBtn?.addEventListener("click", loadTasks);
-
-
-loadTasks();
