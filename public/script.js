@@ -14,32 +14,37 @@ async function loadTasks() {
     taskList.innerHTML = ""; // empty list
   
     tasks.forEach(task => {
-        const li = document.createElement("li"); // construct the li element
-        li.textContent = task.name;
-        
-        if (task.completed) li.classList.add("completed");  // cross it out
-        
-        // Toggle completion status using coreHTTP function
-        //todo write a message telling the user that clicking the item will do this
-        li.addEventListener("click", async () => {
-        await api.toggleComplete(task._id, !task.completed);
-        loadTasks(); // Refresh list
+        const li = document.createElement("li");
+      
+        const text = document.createTextNode(task.name);
+        li.appendChild(text);
+      
+        if (task.completed) li.classList.add("completed");
+      
+        // COMPLETE Button
+        const completeBtn = document.createElement("button");
+        completeBtn.textContent = "✔️"; // Toggle button
+        completeBtn.classList.add("complete-button");
+        completeBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          await api.toggleComplete(task._id, !task.completed);
+          loadTasks();
         });
-
-        // Delete button
-        const del = document.createElement("button");
-        //del.textContent = "Delete Task";
-        del.textContent = "D";
-        del.classList.add("delete-button");
-        del.addEventListener("click", async (e) => {
-            // Stop propogation prevents the click from toggling completion status
-            e.stopPropagation();   
-            await api.delete(task._id);
-            loadTasks(); // Refresh list
+      
+        // DELETE Button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete"; 
+        deleteBtn.classList.add("delete-button");
+        deleteBtn.addEventListener("click", async (e) => {
+          e.stopPropagation();
+          await api.delete(task._id);
+          loadTasks();
         });
-
-        li.appendChild(del);       // Add the delete button to the task element
-        taskList.appendChild(li);  // Add the element to the list
+      
+        // Append buttons
+        li.appendChild(completeBtn);
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
     });
   }
 
