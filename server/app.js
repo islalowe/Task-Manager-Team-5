@@ -41,6 +41,25 @@ app.post("/api/tasks", async (req, res) => {
 		res.status(500).json({msg: error.message })
 	}
 });
+
+
+// PATCH Route (for toggling completion))
+app.patch("/api/tasks/:id", async (req, res) => {
+	try {
+		const updatedTask = await data.findByIdAndUpdate(
+			req.params.id,
+			{ completed: req.body.completed },
+			{ new: true }
+		);
+		if (!updatedTask) {
+			return res.status(404).json({ msg: "Task not found" });
+		}
+		res.status(200).json(updatedTask);
+	} catch (error) {
+		res.status(500).json({ msg: error.message });
+	}
+});
+
   
 
 // Connect to the database and start the appl server
