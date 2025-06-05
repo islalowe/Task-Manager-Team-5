@@ -85,24 +85,29 @@ async function loadTasks() {
         li.classList.add("crossed-out");
       }
 
-      // Toggle complete on click
-      //todo
-      li.addEventListener("click", async () => {
+      // COMPLETE BUTTON
+      const completeBtn = document.createElement("button");
+      completeBtn.textContent = "✔️";
+      completeBtn.classList.add("complete-button");
+      completeBtn.addEventListener("click", async (e) => {
+        e.stopPropagation(); // prevent it from triggering other click handlers
         await api.toggleComplete(task._id, !task.completed);
         loadTasks();
       });
 
-
-      // Delete button - different than completing a task. This will remove a task.
-      const del = document.createElement("button");
-      del.textContent = "X";
-      del.addEventListener("click", async (e) => {
-        e.stopPropagation();
+      // DELETE BUTTON
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "🗑️"; // or "D" if you prefer
+      deleteBtn.classList.add("delete-button");
+      deleteBtn.addEventListener("click", async (e) => {
+        e.stopPropagation(); // prevent accidental completion
         await api.delete(task._id);
         loadTasks();
       });
 
-      li.appendChild(del);
+      // Add buttons to the task list item
+      li.appendChild(completeBtn);
+      li.appendChild(deleteBtn);
       taskList.appendChild(li);
     });
   } catch (err) {
