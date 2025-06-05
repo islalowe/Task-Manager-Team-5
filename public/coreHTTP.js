@@ -46,6 +46,8 @@ class APILibrary {
   }
   
   // this will point to routes defines in server/routes/tasks.js
+  // instantiates the class
+  // Sets the base URL to /api/tasks so everything else can just add endpoints after that.
   const api = new APILibrary("/api/tasks");
 
   

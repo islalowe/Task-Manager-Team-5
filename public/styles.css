@@ -17,6 +17,11 @@ body {
   .form-group {
     margin-bottom: 15px;
   }
+
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }  
   
   label {
     font-weight: bold;
