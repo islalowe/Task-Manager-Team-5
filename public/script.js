@@ -6,16 +6,16 @@ const taskInput = document.getElementById("task-input");
 const taskList = document.getElementById("task-list");
 
 async function loadTasks() {
-  const tasks = await api.get();
-  taskList.innerHTML = "";
-
-  tasks.forEach(task => {
-    const li = document.createElement("li");
-    li.textContent = task.name;
-    if (task.completed) li.classList.add("completed");
-    taskList.appendChild(li);
-  });
-}
+    const tasks = await api.request("GET", ""); // Gets from /api/tasks
+    taskList.innerHTML = "";
+  
+    tasks.forEach(task => {
+      const li = document.createElement("li");
+      li.textContent = task.name;
+      if (task.completed) li.classList.add("completed");
+      taskList.appendChild(li);
+    });
+  }
 
 taskForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -26,5 +26,8 @@ taskForm.addEventListener("submit", async (e) => {
   taskInput.value = "";
   loadTasks();
 });
+
+// Get
+document.getElementById("get-tasks-button").addEventListener("click", loadTasks);
 
 loadTasks(); // on page load
