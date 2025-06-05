@@ -50,15 +50,14 @@ class APILibrary {
   }
 
   
-  // await fetch(`/api/tasks/${id}`, {
-  //   method: "PATCH",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ completed: true }) // or false
-  // });
-  // This method is shorthand for the one above ^
+  delete(id) {
+    return this.request("DELETE", `/${id}`);
+  }
+  
   toggleComplete(id, completed) {
     return this.request("PATCH", `/${id}`, "", { completed });
   }
+  
 }
 
 // this will point to routes defines in server/routes/tasks.js
