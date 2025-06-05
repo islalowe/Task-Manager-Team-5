@@ -23,6 +23,15 @@ body {
     color: gray;
   }  
   
+  .delete-button {
+    margin-left: 10px;
+    color: red;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
   label {
     font-weight: bold;
     display: block;

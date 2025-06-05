@@ -49,6 +49,13 @@ class APILibrary {
     return this.request("DELETE", `/${id}`);
   }
 
+  
+  // await fetch(`/api/tasks/${id}`, {
+  //   method: "PATCH",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ completed: true }) // or false
+  // });
+  // This method is shorthand for the one above ^
   toggleComplete(id, completed) {
     return this.request("PATCH", `/${id}`, "", { completed });
   }
@@ -74,15 +81,20 @@ async function loadTasks() {
     tasks.forEach(task => {
       const li = document.createElement("li");
       li.textContent = task.name;
-      if (task.completed) li.classList.add("completed");
+      if (task.completed) {
+        li.classList.add("completed");
+        li.classList.add("crossed-out");
+      }
 
       // Toggle complete on click
+      //todo
       li.addEventListener("click", async () => {
         await api.toggleComplete(task._id, !task.completed);
         loadTasks();
       });
 
-      // Optional delete button
+
+      // Delete button - different than completing a task. This will remove a task.
       const del = document.createElement("button");
       del.textContent = "X";
       del.addEventListener("click", async (e) => {
@@ -111,6 +123,7 @@ taskForm.addEventListener("submit", async (e) => {
 });
 
 // Refresh manually
+// This calls the loadTask Get function in script.js
 refreshBtn?.addEventListener("click", loadTasks);
 
 
