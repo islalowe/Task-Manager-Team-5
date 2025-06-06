@@ -47,6 +47,7 @@ app.post("/api/tasks", async (req, res) => {
 app.patch("/api/tasks/:id", async (req, res) => {
 	try {
 		const updatedTask = await data.findByIdAndUpdate(
+			// id parameter for the method
 			req.params.id,
 			{ completed: req.body.completed },
 			{ new: true }
@@ -60,9 +61,23 @@ app.patch("/api/tasks/:id", async (req, res) => {
 	}
 });
 
+
+//DELETE Route (for deleting tasks)
+app.delete("/api/tasks/:id", async (req, res) => {
+	try {
+		const deletedTask = await data.findByIdAndDelete(req.params.id);
+		if (!deletedTask) {
+			return res.status(404).json({ msg: "Task not found" });
+		}
+		res.status(200).json({ msg: "Task deleted successfully" });
+	} catch (error) {
+		res.status(500).json({ msg: error.message });
+	}
+})
+
   
 
-// Connect to the database and start the appl server
+// Connect to the database and start the app server
 const port = 8080;
 const appName = "Task Manager";
 (async function () {
