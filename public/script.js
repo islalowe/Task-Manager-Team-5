@@ -65,6 +65,33 @@ taskForm.addEventListener("submit", async (e) => {
   loadTasks();
 });
 
+//new function to update task 
+// EDIT (update task)
+async function editTask(taskId) {
+  const newContent = prompt('Edit task:', '');
+  if (!newContent) return;
+
+  try {
+    const response = await fetch(`/api/tasks/${taskId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content: newContent })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update task');
+    }
+
+    location.reload();
+  } catch (error) {
+    console.error('Error updating task:', error);
+    alert('Failed to update task');
+  }
+}
+
+
 // Manual refresh button
 refreshBtn?.addEventListener("click", loadTasks);
 
